@@ -1,0 +1,25 @@
+server.port=8072
+management.endpoints.web.exposure.include=*
+
+spring.application.name=gatewayserver
+spring.config.import= configserver:http://localhost:8071
+
+spring.cloud.gateway.discovery.locator.enabled=false
+
+spring.cloud.gateway.routes.id=ACCOUNTS
+spring.cloud.gateway.routes.uri= lb://ACCOUNTS
+spring.cloud.gateway.routes.predicates.path= /customerexecutive/**
+spring.cloud.gateway.routes.filters.RewritePath= /customerexecutive/accounts/(?<remaining>.*),/$\{remaining}
+
+spring.cloud.gateway.routes.id=LOANS
+spring.cloud.gateway.routes.uri= lb://LOANS
+spring.cloud.gateway.routes.predicates.Path= /customer/**
+spring.cloud.gateway.routes.filters.RewritePath= /customer/loans/(?<remaining>.*),/$\{remaining}
+
+spring.cloud.gateway.routes.id=CARDS
+spring.cloud.gateway.routes.uri= lb://CARDS
+spring.cloud.gateway.routes.predicates.Path= /support/**
+spring.cloud.gateway.routes.filters.RewritePath= /support/cards/(?<remaining>.*),/$\{remaining}
+
+
+
